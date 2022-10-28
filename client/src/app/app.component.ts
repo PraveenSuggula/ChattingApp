@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'client';
+  title = 'angular deployed';
   users: any;
 
   constructor(private http: HttpClient) {}
@@ -25,6 +25,6 @@ export class AppComponent implements OnInit {
     this.users = response
     //console.error(response),
     //console.info('completed')
-    });
+    }); 
   }
 }
