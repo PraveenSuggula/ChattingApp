@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if(await UserExists(registerDto.Username)) return BadRequest("Username is taken");
             using var hmac = new HMACSHA512(); //Hash based message authentication code for security hash algorithm 512 bytes
@@ -35,7 +35,12 @@ namespace API.Controllers
 
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
-            return user;
+            return new UserDto
+            {
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user)
+
+            };
         }
 
         private async Task<bool> UserExists(string username)
@@ -45,7 +50,7 @@ namespace API.Controllers
 
         [HttpPost("login")]
 
-        public async Task<ActionResult<AppUser>> login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> login(LoginDto loginDto)
         {
             var user = await _context.Users
                 .SingleOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
@@ -61,7 +66,12 @@ namespace API.Controllers
                 if(ComputedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid Password");
             }
 
-            return Ok(user);
+            return new UserDto
+            {
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user)
+
+            }; ;
         }
     }
 }
