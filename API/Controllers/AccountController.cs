@@ -20,6 +20,21 @@ namespace API.Controllers
             _tokenService = tokenService;
         }
 
+        /// <summary>
+        /// Register a new User into Chat APP
+        /// </summary>
+        /// <param name="registerDto"></param>
+        /// <returns>Username and token</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     Register new user
+        ///     {
+        ///        "Username": "name",
+        ///        "Password": "password"
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
@@ -48,6 +63,21 @@ namespace API.Controllers
             return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
+        /// <summary>
+        /// Login with existing User
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns>Username and token</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     login new user
+        ///     {
+        ///        "Username": "username",
+        ///        "Password": "same as username"
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost("login")]
 
         public async Task<ActionResult<UserDto>> login(LoginDto loginDto)
