@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder} from '@angular/forms';
 import { AccountService } from './_services/account.service';
 import { User } from './_models/user';
 
@@ -10,14 +9,9 @@ import { User } from './_models/user';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'angular deployed';
-  users: any;
-  countUnitTest: number = 10;
-  
 
-  constructor(private fb: FormBuilder, private accountService: AccountService) {}
+  constructor(private accountService: AccountService) {}
   ngOnInit(): void {
-    this.getUsers();
     this.setCurrentUser();
   }
 
@@ -26,21 +20,4 @@ export class AppComponent implements OnInit {
     this.accountService.setCurrentUser(user);
   }
 
-  getUsers(){
-    this.accountService.getAllUsers().subscribe(res => this.users = res);
-  }
-
-  showMessageUT(msg:string): string {
-    return msg;
-  }
-
-  IncrementCountUT(num: number){
-    this.countUnitTest = this.countUnitTest + num;
-  }
-
-  DecrementCountUT(num: number){
-    this.countUnitTest = this.countUnitTest - num;
-  }
-
-  
 }

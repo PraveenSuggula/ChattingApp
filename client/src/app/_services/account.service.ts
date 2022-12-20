@@ -8,15 +8,25 @@ import { User } from '../_models/user';
 })
 export class AccountService {
   baseUrl = 'https://localhost:7196/api/';
-  private currentUserSource = new ReplaySubject(1);
+  private currentUserSource = new ReplaySubject<User | null>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http:HttpClient) { }
 
   login(model:any){
     return this.http.post<User>(this.baseUrl + 'Account/login',model).pipe(
-      map((res: User) => {
-        const user = res;
+      map((user: User) => {
+        if(user){
+          localStorage.setItem('user',JSON.stringify(user));
+          this.currentUserSource.next(user);
+        }
+      })
+    )
+  }
+
+  register(model:any){
+    return this.http.post<User>(this.baseUrl + 'Account/register',model).pipe(
+      map((user: User) => {
         if(user){
           localStorage.setItem('user',JSON.stringify(user));
           this.currentUserSource.next(user);

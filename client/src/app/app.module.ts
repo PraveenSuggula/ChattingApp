@@ -9,12 +9,16 @@ import { NavComponent } from './nav/nav.component';
 import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { CheckboxlistComponent } from './checkboxlist/checkboxlist.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations' 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './register/register.component' 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    CheckboxlistComponent
+    CheckboxlistComponent,
+    HomeComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
