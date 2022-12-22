@@ -32,7 +32,7 @@ export class AccountService {
           this.currentUserSource.next(user);
         }
       })
-    )
+    ) 
   }
 
   setCurrentUser(user: User){

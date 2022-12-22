@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable } from 'rxjs';
 import { AccountService } from '../_services/account.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { User } from '../_models/user';
 
 @Component({
@@ -9,22 +10,36 @@ import { User } from '../_models/user';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  model:any = {}
+  model: any = {}
   userLoggedIn = false;
+  loginedUserName: string = '';
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private router: Router,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.accountService.currentUser$.subscribe(loggedIn =>
-      this.userLoggedIn = loggedIn?.userName !== undefined ? true : false );
+      {
+        if(loggedIn){
+          this.loginedUserName = loggedIn.userName;
+          this.userLoggedIn = loggedIn.userName !== undefined ? true : false;
+        }
+      })
   }
 
-  login(): void{
-    this.accountService.login(this.model).subscribe(res => {
-      console.log(res);
+  login(): void {
+    this.accountService.login(this.model).subscribe({
+      next: (res) => {
+        this.toastr.success('Login Success', 'Success')
+        this.router.navigateByUrl('/members');
+      },
+      error: (err) => {
+        this.toastr.error(err.error, 'Failed');
+      }
     });
   }
-  logout():void{
+  logout(): void {
+    this.router.navigateByUrl('/');
     this.accountService.logout();
   }
 
